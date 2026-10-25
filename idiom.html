@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>사자성어 테스트</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <p><a href="./">← 테스트 목록</a></p>
+  <h1>사자성어 테스트</h1>
+  <p>깊게 생각하지 말고, 떠오르는 사자성어 3개를 순서대로 적어봐!</p>
+  <form id="f">
+    <label for="a">첫 번째</label><input id="a" list="idioms" required autocomplete="off">
+    <label for="b">두 번째</label><input id="b" list="idioms" required autocomplete="off">
+    <label for="c">세 번째</label><input id="c" list="idioms" required autocomplete="off">
+    <datalist id="idioms"></datalist>
+    <button>결과 보기</button>
+  </form>
+  <div id="result" aria-live="polite"></div>
+
+  <script>
+    const slots = [['a', 'life', '인생관'], ['b', 'love', '연애관'], ['c', 'friend', '우정관']];
+    let byWord = {};
+    fetch('idioms.json').then(r => r.json()).then(list => {
+      list.forEach(it => byWord[it.word] = it);
+      document.getElementById('idioms').innerHTML =
+        list.map(it => `<option value="${it.word}">${it.hanja} · ${it.meaning}</option>`).join('');
+    });
+
+    document.getElementById('f').onsubmit = e => {
+      e.preventDefault();
+      const out = document.getElementById('result');
+      const picked = slots.map(([id]) => byWord[document.getElementById(id).value.trim()]);
+      const missing = slots.filter((_, i) => !picked[i]).map(([id]) => document.getElementById(id).value.trim());
+      if (missing.length) {
+        out.innerHTML = `<p class="error">목록에 없는 사자성어가 있어: ${missing.map(esc).join(', ')}<br>입력칸을 누르면 나오는 목록에서 골라줘!</p>`;
+        return;
+      }
+      out.innerHTML = slots.map(([, key, title], i) => `
+        <div class="card">
+          <h3>${title} · ${picked[i].word} (${picked[i].hanja})</h3>
+          <small>${picked[i].meaning}</small>
+          <p>${picked[i][key]}</p>
+        </div>`).join('');
+    };
+
+    function esc(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
+  </script>
+</body>
+</html>

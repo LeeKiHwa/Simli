@@ -1,0 +1,16 @@
+:root { --bg: #fffaf3; --fg: #2b2b2b; --muted: #777; --card: #fff; --line: #e8dfd2; --accent: #c0392b; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #1d1b19; --fg: #eee; --muted: #aaa; --card: #2a2724; --line: #3d3833; --accent: #ff7b6b; }
+}
+body { font-family: system-ui, sans-serif; max-width: 640px; margin: 3rem auto; padding: 0 16px; line-height: 1.6; background: var(--bg); color: var(--fg); }
+a { color: var(--accent); }
+.tests { list-style: none; padding: 0; }
+.tests a { display: block; padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--fg); text-decoration: none; }
+.tests span { display: block; color: var(--muted); font-size: .9rem; }
+label { display: block; margin: 1rem 0 .3rem; font-weight: 600; }
+input { width: 100%; box-sizing: border-box; padding: .7rem; font-size: 1rem; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--fg); }
+button { margin-top: 1.2rem; width: 100%; padding: .8rem; font-size: 1rem; border: 0; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; }
+.card { margin-top: 1rem; padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.card h3 { margin: 0 0 .3rem; }
+.card small { color: var(--muted); }
+.error { color: var(--accent); }
